@@ -1,0 +1,24 @@
+From 8862f97d0c4894ce48a1e5b37dc8a54bc12ab1c9 Mon Sep 17 00:00:00 2001
+Date: Sun, 15 Dec 2019 19:49:04 -0500
+Subject: [PATCH] config.def.h font to terminus
+
+---
+ config.def.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index 546edda..a91d997 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -5,7 +5,7 @@
+  *
+  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
+  */
+-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
++static char *font = "Terminus:pixelsize=18:antialias=true:autohint=true";
+ static int borderpx = 2;
+ 
+ /*
+-- 
+2.24.1
+
