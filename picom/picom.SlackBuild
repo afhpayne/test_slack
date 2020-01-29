@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Slackware build script for <appname>
+# Slackware build script for Picom
 
-# Copyright <year> <you> <where you live>
+# Copyright 2020 Andrew Payne, Boston MA <phalange@komputermatrix.com>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,6 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Version History
+# 01-29-20 Picom version 7.5
 
 PRGNAM=picom			# replace with name of program
 VERSION=${VERSION:-7.5}	        # replace with version of program
@@ -59,9 +60,6 @@ else
 fi
 
 set -e # Exit on most errors
-# If you prefer to do selective error checking with
-#   command || exit 1
-# then that's also acceptable.
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -76,10 +74,6 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-# Your application will probably need different configure flags;
-# these are provided as an example only.
-# Be sure to build only shared libraries unless there's some need for
-# static.
 mkdir build
 cd build
   CFLAGS="$SLKCFLAGS" \
@@ -106,16 +100,10 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
 # If the man pages are installed to /usr/share/man instead, you'll need to either
 # add the --mandir=/usr/man flag to configure or move them manually after the
 # make install process is run.
-#find $PKG/man -type f -exec gzip -9 {} \;
-#for i in $( find $PKG/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+cp -r $TMP/$PRGNAM-$VERSION/man $PKG/usr/
 
-# Place man page(s) where The Man likes 'em
-#mv $PKG/usr/man $PKG/usr/man
-
-# Compress info pages and remove the package's dir file
-# If no info pages are installed by the software, don't leave this in the script
-#rm -f $PKG/usr/info/dir
-#gzip -9 $PKG/usr/info/*.info*
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 # Remove perllocal.pod and other special files that don't need to be installed,
 # as they will overwrite what's already on the system.  If this is not needed,
@@ -126,14 +114,10 @@ find $PKG -name perllocal.pod \
   -o -name "*.bs" \
   | xargs rm -f
 
-# Copy program documentation into the package
-# The included documentation varies from one application to another, so be sure
-# to adjust your script as needed
-# Also, include the SlackBuild script in the documentation directory
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-#cp -a \
-#  <documentation> \
-#  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+  CONTRIBUTORS COPYING LICENSE.spdx README.md README_orig.md \
+  $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 # Copy the slack-desc (and a custom doinst.sh if necessary) into ./install
