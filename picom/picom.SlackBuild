@@ -97,13 +97,14 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 # Compress man pages
-# If the man pages are installed to /usr/share/man instead, you'll need to either
-# add the --mandir=/usr/man flag to configure or move them manually after the
-# make install process is run.
-cp -r $TMP/$PRGNAM-$VERSION/man $PKG/usr/
+a2x --doctype manpage --format manpage $TMP/$PRGNAM-$VERSION/man/$PRGNAM.1.asciidoc
+a2x --doctype manpage --format manpage $TMP/$PRGNAM-$VERSION/man/$PRGNAM-trans.1.asciidoc
+mkdir -p $PKG/usr/man/man1
+cat $TMP/$PRGNAM-$VERSION/man/$PRGNAM.1 > $PKG/usr/man/man1/$PRGNAM.1
+cat $TMP/$PRGNAM-$VERSION/man/$PRGNAM-trans.1 > $PKG/usr/man/man1/$PRGNAM-trans.1
 
-find $PKG/usr/man -type f -exec gzip -9 {} \;
-for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+find $PKG/usr/man/ -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man/ -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 # Remove perllocal.pod and other special files that don't need to be installed,
 # as they will overwrite what's already on the system.  If this is not needed,

@@ -6,14 +6,14 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
      |-----handy-ruler------------------------------------------------------|
-picom: picom (X compositor)
+picom: Picom A lightweight compositor for X11 (previously a compton fork)
 picom:
-picom: Picom is a compositor for X, and a fork of xcompmgr-dana.
-picom:
-picom:
-picom:
+picom: This is forked from the original Compton because it seems to have
+picom: become unmaintained.
 picom:
 picom:
 picom:
 picom:
 picom:
+picom:
+picom: Homepage: https://github.com/yshui/picom
