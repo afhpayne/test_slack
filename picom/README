@@ -1,9 +1,0 @@
-Picom
-
-This is a development branch, bugs to be expected
-
-This is forked from the original Compton because it seems to have become unmaintained.
-
-The current battle plan of this fork is to refactor it to make the code possible to maintain, so potential contributors won't be scared away when they take a look at the code.
-
-We also try to fix bugs.
