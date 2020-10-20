@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/jabref
+Name=JabRef
+GenericName=jabref
+Icon=JabRef
+StartupNotify=true
+Categories=Office;
