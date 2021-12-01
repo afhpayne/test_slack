@@ -1,0 +1,11 @@
+REQUIRES
+atk atkmm aubio autoconf automake bison boost cairo cairomm cmake cppunit curl expat ExtUtils-MakeMaker fftw flac flex fontconfig freetype gdk-pixbuf gettext glib glibmm gnome-common gnome-doc-utils gobject-introspection gtk-doc gtk-engines gtk+ gtkmm harfbuzz intltool itstool jpegsrc libarchive libart_lgpl libffi libiconv liblo libogg libpng libsamplerate libsigc++ libsndfile libtool libusb libvorbis libwebsockets libxml2 libxslt lilv LRDF lv2 m4 make NSS NSS-PEM pango pangomm pcre pixman pkg-config raptor2 rasqal rdflib readline redland rubberband serd sord sratom suil taglib tar termcap tiff util-linux vamp-plugin-sdk XML-Parser XML-Simple xz zlib
+
+Sub_Requires
+serd sord lv2 ladspa_sdk sratom vamp-plugin-sdk
+
+To-do
+soundtouch
+
+Removed
+ gtk-engines  libwebsockets

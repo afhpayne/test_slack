@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+     |-----handy-ruler------------------------------------------------------|
+seatd: seatd (A minimal seat management daemon, and a universal seat
+seatd: management library.)
+seatd: 
+seatd: Seat management takes care of mediating access to shared devices 
+seatd: (graphics, input), without requiring the applications needing access
+seatd: to be root.
+seatd: 
+seatd: 
+seatd:
+seatd: Homepage: https://sr.ht/~kennylevinsen/seatd/
+seatd:
