@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+  |-----handy-ruler------------------------------------------------------|
+i3: i3 (an improved dynamic tiling window manager)
+i3:
+i3: i3 is a tiling window manager, completely written from scratch. The
+i3: target platforms are GNU/Linux and BSD operating systems, our code is
+i3: Free and Open Source Software (FOSS) under the BSD license.
+i3: 
+i3: 
+i3: 
+i3: 
+i3: Homepage: https://i3wm.org/
+i3:

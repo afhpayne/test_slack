@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+         |-----handy-ruler------------------------------------------------------|
+drumgizmo: DrumGizmo (LV2 drum plugin)
+drumgizmo:
+drumgizmo: DrumGizmo is an open source, multichannel, multilayered, 
+drumgizmo: cross-platform drum plugin and stand-alone application. It enables
+drumgizmo: you to compose drums in midi and mix them with a multichannel
+drumgizmo: approach. It is comparable to that of mixing a real drumkit that has
+drumgizmo: been recorded with a multimic setup.
+drumgizmo:
+drumgizmo: Homepage: https://drumgizmo.org
+drumgizmo:
+drumgizmo:

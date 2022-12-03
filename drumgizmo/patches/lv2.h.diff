@@ -1,0 +1,22 @@
+diff --git a/pluginlv2.h b/pluginlv2.h
+index 8365de7..a0ac413 100644
+--- a/pluginlv2.h
++++ b/pluginlv2.h
+@@ -192,7 +192,7 @@ public:
+ 	void closeWindow() override;
+ 
+ public:
+-	static LV2_Handle instantiate(const struct _LV2_Descriptor* descriptor,
++	static LV2_Handle instantiate(const LV2_Descriptor* descriptor,
+ 	                              double sample_rate,
+ 	                              const char* bundle_path,
+ 	                              const LV2_Feature* const * features);
+@@ -222,7 +222,7 @@ public:
+ 	                                uint32_t flags,
+ 	                                const LV2_Feature *const * features);
+ 
+-	static LV2UI_Handle uiInstantiate(const struct _LV2UI_Descriptor * descriptor,
++	static LV2UI_Handle uiInstantiate(const LV2UI_Descriptor * descriptor,
+ 	                                  const char * plugin_uri,
+ 	                                  const char * bundle_path,
+ 	                                  LV2UI_Write_Function write_function,

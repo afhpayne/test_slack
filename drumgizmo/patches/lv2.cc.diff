@@ -1,0 +1,22 @@
+diff --git a/pluginlv2.cc b/pluginlv2.cc
+index d12c0e7..c61beba 100644
+--- a/pluginlv2.cc
++++ b/pluginlv2.cc
+@@ -86,7 +86,7 @@ void PluginLV2::setLatency(float latency)
+ 	}
+ }
+ 
+-LV2_Handle PluginLV2::instantiate(const struct _LV2_Descriptor* descriptor,
++LV2_Handle PluginLV2::instantiate(const LV2_Descriptor* descriptor,
+                                   double sample_rate,
+                                   const char* bundle_path,
+                                   const LV2_Feature *const *features)
+@@ -616,7 +616,7 @@ const void* PluginLV2::extensionData(const char *uri)
+ //
+ // GUI
+ //
+-LV2UI_Handle PluginLV2::uiInstantiate(const struct _LV2UI_Descriptor*descriptor,
++LV2UI_Handle PluginLV2::uiInstantiate(const LV2UI_Descriptor*descriptor,
+                                       const char * plugin_uri,
+                                       const char * bundle_path,
+                                       LV2UI_Write_Function write_function,
