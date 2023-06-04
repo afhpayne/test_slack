@@ -1,0 +1,8 @@
+10,12c10,12
+< if git.found()
+<   git_version = run_command(git, 'describe', '--abbrev=4', '--dirty', check: true).stdout().strip().split('-')
+< endif
+---
+> #if git.found()
+> #  git_version = run_command(git, 'describe', '--abbrev=4', '--dirty', check: true).stdout().strip().split('-')
+> #endif
