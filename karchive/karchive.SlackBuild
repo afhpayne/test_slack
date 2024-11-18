@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Slackware build script for gnucash
+# Slackware build script for karchive
 
-# Copyright 2024 Andrew Payne phalange@komputermatrix.com
-# Copyright 2015  Trayan Denev, tdenev@gmail.com
-# This version Copyright 2018-2022 Lenard Spencer <lenardrspencer@gmail.com>
+# Copyright 2024 Andrew Payne <phalange@komputermatrix.com>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -13,25 +11,28 @@
 # 1. Redistributions of this script must retain the above copyright
 #    notice, this list of conditions and the following disclaimer.
 #
-# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
-# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# |-----------------------------------------------------------------| #
 
 cd $(dirname $0) ; CWD=$(pwd)
 
-PRGNAM=gnucash
-VERSION=${VERSION:-5.9}
+PRGNAM=karchive
+VERSION=${VERSION:-6.8.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_DBs}
 PKGTYPE=${PKGTYPE:-tgz}
 
+# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i586 ;;
@@ -52,38 +53,6 @@ fi
 TMP=${TMP:-/tmp/DBs}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
-
-# if [ "$DBI" = "yes" ]; then
-#   DBIARGS="-DWITH_SQL=ON -DGNC_DBD_DIR=/usr/lib${LIBDIRSUFFIX}/dbd/"
-#   echo " building with SQL integration enabled"
-#   sleep 1
-# else
-#   DBIARGS="-DWITH_SQL=OFF "
-# fi
-
-# if [ "$OFX" = "yes" ]; then
-#   OFXBANKING="-DWITH_OFX=ON"
-#   echo " building with OFX enabled"
-#   sleep 1
-# else
-#   OFXBANKING="-DWITH_OFX=OFF"
-# fi
-
-# if [ "$AQ" = "yes" ]; then
-#   AQBANKING="-DWITH_AQBANKING=ON"
-#   echo " building with aqbanking enabled"
-#   sleep 1
-# else
-#   AQBANKING="-DWITH_AQBANKING=OFF"
-# fi
-
-# if [ "${WITHPYTHON}" = "yes" ]; then
-#   W_PYTHON="-DWITH_PYTHON=ON"
-#   echo " building with Python bindings enabled"
-#   sleep 1
-# else
-#   W_PYTHON="-DWITH_PYTHON=OFF"
-# fi
 
 if [ "$ARCH" = "i586" ]; then
   SLKCFLAGS="-O2 -march=i586 -mtune=i686"
@@ -108,33 +77,36 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-v$VERSION.tar.gz
+mv $PRGNAM-v$VERSION $PRGNAM-$VERSION
 cd $PRGNAM-$VERSION
 chown -R root:root .
-
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
+# Your application will probably need different cmake flags; these are only
+# examples.  You might use 'ccmake' to see the available flags...
 mkdir -p build
 cd build
   cmake \
     -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_WITH_QT6=ON \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DCMAKE_BUILD_TYPE=Release ..
+    -DMAN_INSTALL_DIR=/usr/man ..
   make
   make install/strip DESTDIR=$PKG
 cd ..
-  
+
 # Don't ship .la files:
 rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
 
-# Strip binaries and libraries
+# Strip binaries and libraries - this can be done with 'make install-strip'
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
@@ -142,49 +114,17 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
-# Compress info pages and remove the package's dir file
-rm -f $PKG/usr/info/dir
-gzip -9 $PKG/usr/info/*.info*
-
-# mv $PKG/usr/share/man/ $PKG/usr/
-
 # Copy program documentation into the package
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  <documentation> \
+  AUTHORS INSTALL README.md \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-
-
-
-
-# Don't clobber this
-# mv $PKG/etc/gnucash/environment $PKG/etc/gnucash/environment.new
-
 
 # Copy the slack-desc (and a custom doinst.sh if necessary) into ./install
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 # Make the package; be sure to leave it in $OUTPUT
-# If package symlinks need to be created during install *before*
-# your custom contents of doinst.sh runs, then add the -p switch to
-# the makepkg command below -- see makepkg(8) for details
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE
-
-
-# mkdir -p $PKG/usr/doc
-# mv $PKG/usr/share/doc/$PRGNAM $PKG/usr/doc/$PRGNAM-$VERSION
-# # Remove all those old ChangeLogs:
-# rm $PKG/usr/doc/$PRGNAM-$VERSION/ChangeLog.{1,2}*
-# cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-# rmdir $PKG/usr/share/doc
-
-# mkdir -p $PKG/install
-# cat $CWD/slack-desc > $PKG/install/slack-desc
-# cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# cd $PKG
-# /sbin/makepkg -p -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.$PKGTYPE
